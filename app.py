@@ -111,5 +111,26 @@ def get_news():
 def news():
     return render_template('news.html')
 
+# Route to handle the input form submission
+@app.route('/fetch_news', methods=['POST'])
+def fetch_news():
+    topic = request.form.get('topic')  # Get the topic from the form
+    prompt = f"Fetch good news related to the topic: {topic}."
+    
+    # Generate content using the Gemini API
+    news_content = generate_dynamic_content(prompt)
+
+    try:
+        # Convert the string response to a JSON object
+        news_json = json.loads(news_content)
+        return jsonify(news_json)  # Return the generated news in JSON format
+    except json.JSONDecodeError:
+        return jsonify({"error": "Failed to parse generated content as JSON.", "response": news_content})
+
+# Home endpoint with input form
+@app.route('/')
+def input_form():
+    return render_template('form.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

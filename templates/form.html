@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good News Fetcher</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">Good News Fetcher</h1>
+        <form id="news-form">
+            <div class="form-group">
+                <label for="topic">Enter a Topic:</label>
+                <input type="text" class="form-control" id="topic" name="topic" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Fetch Good News</button>
+        </form>
+        <div id="result" class="mt-4"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#news-form').on('submit', function (e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                const topic = $('#topic').val(); // Get the topic from the input
+
+                $.post('/fetch_news', { topic: topic }, function (data) {
+                    $('#result').empty(); // Clear previous results
+
+                    if (data.error) {
+                        $('#result').html(`<p class="text-danger">${data.error}</p>`);
+                    } else {
+                        // Display the good news
+                        $('#result').append('<h3>Good News:</h3>');
+                        data.articles.forEach(article => {
+                            $('#result').append(`<div><h5>${article.title}</h5><p>${article.content}</p></div>`);
+                        });
+                    }
+                }).fail(function () {
+                    $('#result').html('<p class="text-danger">Failed to fetch news articles. Please try again later.</p>');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
