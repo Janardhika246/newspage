@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Good News Fetcher</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <h1 class="my-4 text-center">Good News Fetcher</h1>
@@ -41,7 +43,8 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
-                                                <h5 class="card-title">${article.title}</h5>
+                                            <h5 class="card-title">${article.title}</h5>
+                                            <h6 class="card-subtitle muted"><del>${article.title2}</del></h6>
                                                 <p class="card-text">${article.positive_content}</p>
                                                 <a href="${article.url}" target="_blank" class="btn btn-primary">Read More</a>
                                                 <p class="card-text"><small class="text-muted">Published at: ${new Date(article.publishedAt).toLocaleDateString()}</small></p>
@@ -62,4 +65,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -22,8 +22,8 @@ def input_form():
 def generate_dynamic_content(prompt):
     try:
         # Use the Gemini API to generate content
-        model = genai.GenerativeModel('gemini-1.5-flash',
-                                      generation_config={"response_mime_type": "application/json"})
+        model = genai.GenerativeModel('gemini-1.5-flash')
+                                    #   generation_config={"response_mime_type": "application/json"})
         response = model.generate_content(prompt)
 
         if hasattr(response, 'text'):
@@ -64,16 +64,18 @@ def get_news():
             url = article['url']
             urlToImage = article.get('urlToImage')
 
-            if content:
+            if title:
                 # Prepare the context for Gemini with a prompt
-                positive_content = generate_dynamic_content(content)
+                prompt="rewrite the following news title into a positive tone,avoid negativity should deliver an optimistic message, only include the rewritten title in the response maintain same character count :\n"+ title
+                positive_content = generate_dynamic_content(prompt)
             else:
                 positive_content = 'No content available for this article.'
 
             # Append rewritten content to the list
             rewritten_news.append({
-                'title': title,
-                'positive_content': positive_content,
+                'title': positive_content,
+                'title2': title,
+                'positive_content': content,
                 'url': url,
                 'urlToImage': urlToImage,
                 'publishedAt': article.get('publishedAt')
